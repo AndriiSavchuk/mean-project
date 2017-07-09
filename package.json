@@ -1,0 +1,11 @@
+{
+  "name": "mean-project",
+  "version": "1.0.0",
+  "description": "MEAN project for test task",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrii Savchuk",
+  "license": "ISC"
+}
