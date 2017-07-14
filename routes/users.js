@@ -25,7 +25,34 @@ router.post('/register', (req, res, next) => {
 
 // Authenticate route
 router.post('/authenticate', (req, res, next) => {
-  res.send('AUTHENTICATE');
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.getUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      return res.json({succes: false, msg: 'User not found'});
+    }
+
+    user.comparePassword(password, user.password, (err, isMatch) => {
+      if (err) throw err;
+      if (isMatch) {
+        const token = jwt.sign(user, config.secret, {
+          expiresIn: 604800 // 1 week
+        });
+
+        res.json({
+          succes: true,
+          id: user._id,
+          name: user.name,
+          username: user.username,
+          email: user.email
+        });
+      } else {
+        return res.json({succes: false, msg: 'Wrong pasword'});
+      }
+    });
+  });
 });
 
 // Profile route

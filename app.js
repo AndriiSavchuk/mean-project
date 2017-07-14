@@ -40,6 +40,8 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
+require('./config/passport')(passport);
+
 // Using Path to users files
 app.use('/users', users);
 
