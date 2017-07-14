@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-
+const config = require('../config/database');
 const User = require('../models/user');
 
 // Register route
@@ -20,7 +20,7 @@ router.post('/register', (req, res, next) => {
     } else {
       res.json({succes: true, msg:'User register'});
     }
-  })
+  });
 });
 
 // Authenticate route
@@ -34,7 +34,7 @@ router.post('/authenticate', (req, res, next) => {
       return res.json({succes: false, msg: 'User not found'});
     }
 
-    user.comparePassword(password, user.password, (err, isMatch) => {
+    User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
         const token = jwt.sign(user, config.secret, {
@@ -43,10 +43,13 @@ router.post('/authenticate', (req, res, next) => {
 
         res.json({
           succes: true,
-          id: user._id,
-          name: user.name,
-          username: user.username,
-          email: user.email
+          token: 'JWT ' + token,
+          user: {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email
+          }
         });
       } else {
         return res.json({succes: false, msg: 'Wrong pasword'});
@@ -56,8 +59,8 @@ router.post('/authenticate', (req, res, next) => {
 });
 
 // Profile route
-router.get('/profile', (req, res, next) => {
-  res.send('PROFILE');
+router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  res.json({user: req.user});
 });
 
 module.exports = router;
