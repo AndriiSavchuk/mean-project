@@ -6,45 +6,49 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
 
-//Connect to Database
+// Connect to Database
 mongoose.connect(config.database);
 
-//On Connection
+// On Connection
 mongoose.connection.on('connected', () => {
   console.log('Connected to database ' + config.database);
 });
 
-//Error
+// Error
 mongoose.connection.on('error', () => {
   console.log('Database error ' + config.database);
 });
 
 const app = express();
 
-//Path for Routes
+// Path for Routes
 const users = require('./routes/users');
 
-//Port Number
+// Port Number
 const port = 3000;
 
-//CORS Middleware
+// CORS Middleware
 app.use(cors());
 
-//Set Static Folder
+// Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // BodyParser Middleware
 app.use(bodyParser.json());
 
-//Using Path to users files
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Using Path to users files
 app.use('/users', users);
 
-//Route to the home page
+// Route to the home page
 app.get('/', (req, res) => {
   res.send('Invalid Endpoint');
 });
 
-//Start Server Function
+// Start Server Function
 app.listen(port, () => {
   console.log('Server works on port: ' + port);
 });

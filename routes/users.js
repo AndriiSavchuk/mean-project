@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-//Register route
+// Register route
 router.post('/register', (req, res, next) => {
   let newUser = new User({
     name: req.body.name,
@@ -23,12 +23,12 @@ router.post('/register', (req, res, next) => {
   })
 });
 
-//Authenticate route
+// Authenticate route
 router.post('/authenticate', (req, res, next) => {
   res.send('AUTHENTICATE');
 });
 
-//Profile route
+// Profile route
 router.get('/profile', (req, res, next) => {
   res.send('PROFILE');
 });
