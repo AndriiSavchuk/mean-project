@@ -1,1 +1,1 @@
-# MEAN-stack project for test task
+# Learning JavaScript MEAN-stack. Practice project.
