@@ -3,7 +3,6 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { tokenNotExpired } from 'angular2-jwt';
 
-
 @Injectable()
 export class AuthService {
   authToken: any;
@@ -47,7 +46,7 @@ export class AuthService {
   }
 
   loggedIn() {
-    return tokenNotExpired;
+    return tokenNotExpired('id_token');
   }
 
   logout() {
