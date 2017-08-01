@@ -31,6 +31,13 @@ export class AuthService {
     this.user = user;
   }
 
+  getProfile() {
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.get('http://localhost:3000/users/profile', { headers: headers })
+      .map(res => res.json());
+  }
+
   logout() {
     this.authToken = null;
     this.user = null;
